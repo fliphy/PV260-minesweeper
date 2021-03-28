@@ -19,7 +19,7 @@ namespace MinesWeeper
         {
             Width = width;
             Height = height;
-            if (!CheckBoardBoundaries(width, height))
+            if (!CheckBoardInitBoundaries(width, height))
             {
                 throw new ArgumentException("Invalid board boundaries");
             }
@@ -105,8 +105,22 @@ namespace MinesWeeper
             return neighbours;
         }
 
+        public void PlayTurn(int x, int y)
+        {
+            x--;
+            y--;
+            if(!CheckBoardBoundaries(x, y))
+            {
+                throw new ArgumentException("Cords out of bounds");
+            }
+        }
 
-        private bool CheckBoardBoundaries(int width, int height)
+        private bool CheckBoardBoundaries(int x, int y)
+        {
+            return x < Width && x >= 0 && y < Height && y >=0; 
+        }
+
+        private bool CheckBoardInitBoundaries(int width, int height)
         {
             return width >= 3 && height >= 3 && width <= 50 && height <= 50;
         }
