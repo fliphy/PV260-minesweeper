@@ -40,6 +40,10 @@ namespace MinesWeeper.Tests
         
         [Test]
         [TestCase(10, 10)]
+        [TestCase(50, 50)]
+        [TestCase(3, 3)]
+        [TestCase(3, 4)]
+        [TestCase(25, 44)]
         public void Board_CreateBoard_ValidAmountOfMines(int width, int height)
         {
             var board = new Board();
@@ -56,5 +60,6 @@ namespace MinesWeeper.Tests
                 Assert.That(mineCount <= maxCount);
             });
         }
+        
     }
 }
