@@ -114,7 +114,8 @@ namespace MinesWeeper
             }
 
             State = (GameBoard[x][y].HasMine) ? -1 : 0;
-            
+            GameBoard[x][y].Revealed = true;
+
         }
 
         private bool CheckBoardBoundaries(int x, int y)

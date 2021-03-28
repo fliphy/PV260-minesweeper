@@ -133,13 +133,15 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        public void Board_PlayTurn_TestRevealed()
+        [TestCase(2, 2)]
+        [TestCase(3, 2)]
+        public void Board_PlayTurn_TestRevealed(int x, int y)
         {
             var board = new Board();
             board.CreateBoard(3, 3);
             board.GameBoard = fakeBoard;
-            board.PlayTurn(2, 2);
-            Assert.True(board.GameBoard[2][2].Revealed);
+            board.PlayTurn(x, y);
+            Assert.True(board.GameBoard[--x][--y].Revealed);
         }
 
 
