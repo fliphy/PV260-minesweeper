@@ -9,6 +9,29 @@ namespace MinesWeeper.Tests
 {
     public class Tests
     {
+        private List<List<Item>> fakeBoard = new()
+        {
+            new List<Item>
+            {
+                new Item {HasMine = true},
+                new Item(),
+                new Item(),
+            },
+            new List<Item>
+            {
+                new Item {HasMine = true},
+                new Item(),
+                new Item(),
+            },
+            new List<Item>
+            {
+                new Item {HasMine = true},
+                new Item(),
+                new Item(),
+            }
+        };
+
+
         [SetUp]
         public void Setup()
         {
@@ -90,21 +113,26 @@ namespace MinesWeeper.Tests
         [TestCase(2, 11)]
         [TestCase(5, 0)]
         [TestCase(0, 5)]
-
         public void Board_PlayTurn_ThrowArgumentException(int x, int y)
         {
-
             Board gameBoard = new Board();
             gameBoard.CreateBoard(10, 10);
-            Assert.Throws<ArgumentException>(() => gameBoard.PlayTurn(x,y));
+            Assert.Throws<ArgumentException>(() => gameBoard.PlayTurn(x, y));
+        }
 
+        public void Board_PlayTurn_FoundMineGameOver()
+        {
+            Board gameBoard = new Board();
+            A.CallTo(() => gameBoard.GameBoard).Returns(fakeBoard);
+            gameBoard.PlayTurn(1, 1);
+            Assert.Equals(gameBoard.state, -1);
         }
 
 
         private bool CheckFieldMinesNumber(int x, int y, Board board)
         {
             HashSet<Tuple<int, int>> neighbours = new HashSet<Tuple<int, int>>();
-            
+
             for (int i = -1; i <= 1; i++)
             {
                 for (int j = -1; j <= 1; j++)
@@ -113,6 +141,7 @@ namespace MinesWeeper.Tests
                     {
                         continue;
                     }
+
                     if (x + i < board.Width && x + i >= 0 && y + j < board.Height && y + j >= 0)
                     {
                         neighbours.Add(new Tuple<int, int>(x + i, y + j));
@@ -123,7 +152,5 @@ namespace MinesWeeper.Tests
             var itemMinesNeighbours = neighbours.Count(a => board.GameBoard[a.Item1][a.Item2].HasMine);
             return itemMinesNeighbours == board.GameBoard[x][y].MinesArround;
         }
-        
     }
-
 }
