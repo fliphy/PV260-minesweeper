@@ -19,7 +19,7 @@ namespace MinesWeeper.Tests
         public void Board_CreateBoard_InvalidArguments_ThrowsArgumentException(int width, int height)
         {
             Board gameBoard = new Board();
-            Assert.Throws<ArgumentException>(gameBoard.createBoard(width, height));
+            Assert.Throws<ArgumentException>(() => gameBoard.CreateBoard(width, height));
         }
     }
 }
