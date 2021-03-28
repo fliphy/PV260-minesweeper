@@ -82,6 +82,39 @@ namespace MinesWeeper
                 }
             }
         }
+        
+        public void PlayTurn(int x, int y)
+        {
+            x--;
+            y--;
+            if(!CheckBoardBoundaries(x, y))
+            {
+                throw new ArgumentException("Cords out of bounds");
+            }
+
+            State = (GameBoard[x][y].HasMine) ? -1 : 0;
+            GameBoard[x][y].Revealed = true;
+
+            var queue = new Queue<Tuple<int, int>>();
+            queue.Enqueue(new Tuple<int, int >(x, y));
+
+
+            while (queue.Any())
+            {
+                var (currentItemX, currentItemY) = queue.Dequeue();
+                GameBoard[currentItemX][currentItemY].Revealed = true;
+                var itemNeighbours = GetItemNeighbors(currentItemX, currentItemY);
+                if (GameBoard[currentItemX][currentItemY].MinesArround > 0) continue;
+                foreach (var item in itemNeighbours)
+                {
+                    if (!GameBoard[item.Item1][item.Item2].Revealed)
+                    {
+                        queue.Enqueue(item);
+                    }
+                }
+            }
+
+        }
 
         private HashSet<Tuple<int, int>> GetItemNeighbors(int x, int y)
         {
@@ -102,20 +135,6 @@ namespace MinesWeeper
             }
 
             return neighbours;
-        }
-
-        public void PlayTurn(int x, int y)
-        {
-            x--;
-            y--;
-            if(!CheckBoardBoundaries(x, y))
-            {
-                throw new ArgumentException("Cords out of bounds");
-            }
-
-            State = (GameBoard[x][y].HasMine) ? -1 : 0;
-            GameBoard[x][y].Revealed = true;
-
         }
 
         private bool CheckBoardBoundaries(int x, int y)

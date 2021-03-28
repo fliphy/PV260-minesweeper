@@ -14,15 +14,7 @@ namespace MinesWeeper.Tests
             new List<Item>
             {
                 new Item {HasMine = true},
-                new Item(),
-                new Item(),
-                new Item(),
-                new Item(),
-            },
-            new List<Item>
-            {
-                new Item {HasMine = true},
-                new Item(),
+                new Item {MinesArround = 1},
                 new Item(),
                 new Item(),
                 new Item(),
@@ -30,18 +22,26 @@ namespace MinesWeeper.Tests
             new List<Item>
             {
                 new Item {HasMine = true},
+                new Item{MinesArround = 1},
                 new Item(),
+                new Item{MinesArround = 1},
+                new Item{MinesArround = 1},
+            },
+            new List<Item>
+            {
+                new Item {HasMine = true},
+                new Item{MinesArround = 1},
                 new Item(),
-                new Item(),
+                new Item{MinesArround = 1},
                 new Item {HasMine = true},
             },
             new List<Item>
             {
                 new Item {HasMine = true},
+                new Item{MinesArround = 1},
                 new Item(),
-                new Item(),
-                new Item(),
-                new Item(),
+                new Item{MinesArround = 1},
+                new Item{MinesArround = 1},
             }
         };
 
@@ -162,7 +162,7 @@ namespace MinesWeeper.Tests
         public void Board_PlayTurn_RevealsCorrectArea()
         {
             var board = new Board();
-            board.CreateBoard(4, 4);
+            board.CreateBoard(4, 5);
             board.GameBoard = fakeBoard;
             board.PlayTurn(1, 4);
 
@@ -185,7 +185,9 @@ namespace MinesWeeper.Tests
             };
             foreach (var (x, y) in correctRevealed)
             {
-                Assert.True(board.GameBoard[x][y].Revealed);
+                var tmp = x - 1;
+                var tmp1 = y - 1;
+                Assert.True(board.GameBoard[tmp][tmp1].Revealed);
             }
 
         }
