@@ -15,10 +15,10 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        [TestCase(2,3)]
-        [TestCase(51,50)]
+        [TestCase(2, 3)]
+        [TestCase(51, 50)]
         [TestCase(-1, 10)]
-        [TestCase(2,2)]
+        [TestCase(2, 2)]
         public void Board_CreateBoard_InvalidArguments_ThrowsArgumentException(int width, int height)
         {
             Board gameBoard = new Board();
@@ -26,9 +26,9 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        [TestCase(5,5)]
-        [TestCase(3,3)]
-        [TestCase(50,50)]
+        [TestCase(5, 5)]
+        [TestCase(3, 3)]
+        [TestCase(50, 50)]
         public void Board_CreateBoard_ValidArguments(int width, int height)
         {
             Board b = new Board();
@@ -39,7 +39,7 @@ namespace MinesWeeper.Tests
                 Assert.That(() => b.GameBoard.First().Count == height);
             });
         }
-        
+
         [Test]
         [TestCase(10, 10)]
         [TestCase(50, 50)]
@@ -53,7 +53,7 @@ namespace MinesWeeper.Tests
             var itemCount = width * height;
             var minCount = Convert.ToInt32(Math.Ceiling(0.2 * itemCount));
             var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
-            
+
             var mineCount = board.GameBoard.Sum(row => row.Count(item => item.HasMine));
 
             Assert.Multiple(() =>
@@ -72,8 +72,8 @@ namespace MinesWeeper.Tests
         public void Board_ItemsHaveCorrectMinesAroundValue(int width, int height)
         {
             var board = new Board();
-            board.CreateBoard(width,height);
-            
+            board.CreateBoard(width, height);
+
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < height; j++)
@@ -82,6 +82,24 @@ namespace MinesWeeper.Tests
                 }
             }
         }
+
+        [Test]
+        [TestCase(0, 0)]
+        [TestCase(100, 100)]
+        [TestCase(11, 1)]
+        [TestCase(2, 11)]
+        [TestCase(5, 0)]
+        [TestCase(0, 5)]
+
+        public void Board_PlayTurn_ThrowArgumentException(int x, int y)
+        {
+
+            Board gameBoard = new Board();
+            gameBoard.CreateBoard(10, 10);
+            Assert.Throws<ArgumentException>(() => gameBoard.PlayTurn(x,y));
+
+        }
+
 
         private bool CheckFieldMinesNumber(int x, int y, Board board)
         {
@@ -107,4 +125,5 @@ namespace MinesWeeper.Tests
         }
         
     }
+
 }

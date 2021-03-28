@@ -106,8 +106,6 @@ namespace MinesWeeper
         }
 
 
-
-
         private bool CheckBoardBoundaries(int width, int height)
         {
             return width >= 3 && height >= 3 && width <= 50 && height <= 50;
