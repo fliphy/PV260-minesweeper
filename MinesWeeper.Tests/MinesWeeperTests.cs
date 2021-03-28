@@ -22,26 +22,26 @@ namespace MinesWeeper.Tests
             new List<Item>
             {
                 new Item {HasMine = true},
-                new Item{MinesArround = 1},
+                new Item {MinesArround = 1},
                 new Item(),
-                new Item{MinesArround = 1},
-                new Item{MinesArround = 1},
+                new Item {MinesArround = 1},
+                new Item {MinesArround = 1},
             },
             new List<Item>
             {
                 new Item {HasMine = true},
-                new Item{MinesArround = 1},
+                new Item {MinesArround = 1},
                 new Item(),
-                new Item{MinesArround = 1},
+                new Item {MinesArround = 1},
                 new Item {HasMine = true},
             },
             new List<Item>
             {
                 new Item {HasMine = true},
-                new Item{MinesArround = 1},
+                new Item {MinesArround = 1},
                 new Item(),
-                new Item{MinesArround = 1},
-                new Item{MinesArround = 1},
+                new Item {MinesArround = 1},
+                new Item {MinesArround = 1},
             }
         };
 
@@ -140,7 +140,7 @@ namespace MinesWeeper.Tests
         public void Board_PlayTurn_CorrectStateAfterTurn(int x, int y, int expected)
         {
             Board gameBoard = new Board();
-            gameBoard.CreateBoard(4,5);
+            gameBoard.CreateBoard(4, 5);
             gameBoard.GameBoard = fakeBoard;
             gameBoard.PlayTurn(x, y);
             Assert.AreEqual(expected, gameBoard.State);
@@ -156,16 +156,16 @@ namespace MinesWeeper.Tests
 
             var correctRevealed = new List<Tuple<int, int>>()
             {
-                new (1, 2),
-                new (1, 3),
-                new (1, 4),
-                new (1, 5),
-                new (2, 2),
-                new (2, 3),
-                new (2, 4),
-                new (2, 5),
-                new (3, 2),
-                new (3, 3),
+                new(1, 2),
+                new(1, 3),
+                new(1, 4),
+                new(1, 5),
+                new(2, 2),
+                new(2, 3),
+                new(2, 4),
+                new(2, 5),
+                new(3, 2),
+                new(3, 3),
                 new(3, 4),
                 new(4, 2),
                 new(4, 3),
@@ -203,7 +203,7 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        [TestCase(1,1)]
+        [TestCase(1, 1)]
         [TestCase(2, 5)]
         [TestCase(10, 10)]
         [TestCase(9, 4)]
@@ -231,8 +231,21 @@ namespace MinesWeeper.Tests
             Assert.False(board.GameBoard[--x][--y].HasFlag);
         }
 
+        public void Board_PlaceFlag_GameHasEnded()
+        {
+            var board = new Board();
+            board.CreateBoard(4, 5);
+            board.GameBoard = fakeBoard;
+            board.PlaceFlag(1,1);
+            board.PlaceFlag(2,1);
+            board.PlaceFlag(3,1);
+            board.PlaceFlag(4,1);
+            board.PlaceFlag(3,5);
+            Assert.AreEqual(1, board.State = 1);
+        }
 
-        private bool CheckFieldMinesNumber(int x, int y, Board board)
+
+    private bool CheckFieldMinesNumber(int x, int y, Board board)
         {
             HashSet<Tuple<int, int>> neighbours = new HashSet<Tuple<int, int>>();
 
