@@ -11,9 +11,10 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        public void Test1()
+        [TestCase(10)]
+        public void Test1(int pom)
         {
-            Assert.Pass();
+            Assert.AreEqual(pom, 9);
         }
     }
 }
