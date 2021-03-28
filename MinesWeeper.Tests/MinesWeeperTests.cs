@@ -231,6 +231,7 @@ namespace MinesWeeper.Tests
             Assert.False(board.GameBoard[--x][--y].HasFlag);
         }
 
+        [Test]
         public void Board_PlaceFlag_GameHasEnded()
         {
             var board = new Board();

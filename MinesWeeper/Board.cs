@@ -9,7 +9,13 @@ namespace MinesWeeper
         public List<List<Item>> GameBoard { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
+        
+        public int CurrentFlagCount { get; set; }
+        
+        public int MineCount { get; set; }
         public int State { get; set; }
+
+        private HashSet<Tuple<int, int>> _minesCoords;
 
         public Board()
         {
@@ -49,18 +55,18 @@ namespace MinesWeeper
             var itemCount = width * height;
             var minCount = Convert.ToInt32(Math.Ceiling(0.2 * itemCount));
             var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
-            var mineCount = random.Next(minCount, maxCount + 1);
+            MineCount = random.Next(minCount, maxCount + 1);
 
-            var mineCoords = GenerateMineCords(mineCount, width, height);
-            PlaceMines(mineCoords);      
+            _minesCoords = GenerateMineCords(width, height);
+            PlaceMines();      
         }
 
-        private HashSet<Tuple<int, int>> GenerateMineCords(int mineCount, int width, int height)
+        private HashSet<Tuple<int, int>> GenerateMineCords( int width, int height)
         {
 
             var random = new Random();
             var mineCoords = new HashSet<Tuple<int, int>>();
-            while (mineCoords.Count != mineCount)
+            while (mineCoords.Count != MineCount)
             {
                 var x = random.Next(width);
                 var y = random.Next(height);
@@ -70,9 +76,9 @@ namespace MinesWeeper
             return mineCoords;
         }
 
-        private void PlaceMines(HashSet<Tuple<int, int>> mineCoords)
+        private void PlaceMines()
         {
-            foreach (var (x, y) in mineCoords)
+            foreach (var (x, y) in _minesCoords)
             {
                 GameBoard[x][y].HasMine = true;
                 var neighbors = GetItemNeighbors(x, y);
@@ -126,7 +132,19 @@ namespace MinesWeeper
                 throw new ArgumentException("Coords out of bounds.");
             }
 
+            if (!GameBoard[x][y].HasFlag && CurrentFlagCount == MineCount) return;
+
             GameBoard[x][y].HasFlag = !GameBoard[x][y].HasFlag;
+
+            if (GameBoard[x][y].HasFlag)
+            {
+                CurrentFlagCount++;
+            }
+
+            if (CurrentFlagCount == MineCount)
+            {
+                State =_minesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag) ? 1 : 0;
+            }
         }
 
         private void DecrementPosition(ref int x, ref int y)
