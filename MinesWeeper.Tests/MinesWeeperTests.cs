@@ -121,13 +121,15 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        public void Board_PlayTurn_FoundMineGameOver()
+        [TestCase(1, 1, -1)]
+        [TestCase(1, 2, 0)]
+        public void Board_PlayTurn_CorrectStateAfterTurn(int x, int y, int expected)
         {
             Board gameBoard = new Board();
             gameBoard.CreateBoard(3,3);
             gameBoard.GameBoard = fakeBoard;
-            gameBoard.PlayTurn(1, 1);
-            Assert.AreEqual(-1, gameBoard.State);
+            gameBoard.PlayTurn(x, y);
+            Assert.AreEqual(expected, gameBoard.State);
         }
 
 

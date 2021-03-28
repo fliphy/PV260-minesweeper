@@ -25,8 +25,6 @@ namespace MinesWeeper
                 throw new ArgumentException("Invalid board boundaries");
             }
             InitializeBoard(width, height);
-            
-            
         }
 
 
