@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MinesWeeper
 {
     public class Board
     {
-        public Item[,] GameBoard { get; private set; }
+        public List<List<Item>> GameBoard { get; private set; }
 
         public Board()
         {
@@ -24,12 +25,13 @@ namespace MinesWeeper
 
         private void InitializeBoard(int width, int height)
         {
-            GameBoard = new Item[width, height];
+            GameBoard = new List<List<Item>>();
             for (int i = 0; i < width; i++)
             {
+                GameBoard.Add(new List<Item>());
                 for (int j = 0; j < height; j++)
                 {
-                    GameBoard[i, j] = new Item();
+                    GameBoard[i].Add(new Item());
                 }
             }
         }

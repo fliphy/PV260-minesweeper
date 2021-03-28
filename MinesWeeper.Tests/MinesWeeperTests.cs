@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 using FakeItEasy;
 
@@ -32,8 +33,8 @@ namespace MinesWeeper.Tests
             b.CreateBoard(width, height);
             Assert.Multiple(() =>
             {
-                Assert.That(() => b.GameBoard.GetLength(0) == width);
-                Assert.That(() => b.GameBoard.GetLength(1) == height);
+                Assert.That(() => b.GameBoard.Count == width);
+                Assert.That(() => b.GameBoard.First().Count == height);
             });
         }
     }
