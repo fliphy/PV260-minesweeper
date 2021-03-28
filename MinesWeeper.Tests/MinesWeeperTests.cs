@@ -16,16 +16,30 @@ namespace MinesWeeper.Tests
                 new Item {HasMine = true},
                 new Item(),
                 new Item(),
-            },
-            new List<Item>
-            {
-                new Item {HasMine = true},
                 new Item(),
                 new Item(),
             },
             new List<Item>
             {
                 new Item {HasMine = true},
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item(),
+            },
+            new List<Item>
+            {
+                new Item {HasMine = true},
+                new Item(),
+                new Item(),
+                new Item(),
+                new Item {HasMine = true},
+            },
+            new List<Item>
+            {
+                new Item {HasMine = true},
+                new Item(),
+                new Item(),
                 new Item(),
                 new Item(),
             }
@@ -126,7 +140,7 @@ namespace MinesWeeper.Tests
         public void Board_PlayTurn_CorrectStateAfterTurn(int x, int y, int expected)
         {
             Board gameBoard = new Board();
-            gameBoard.CreateBoard(3,3);
+            gameBoard.CreateBoard(4,4);
             gameBoard.GameBoard = fakeBoard;
             gameBoard.PlayTurn(x, y);
             Assert.AreEqual(expected, gameBoard.State);
@@ -138,10 +152,42 @@ namespace MinesWeeper.Tests
         public void Board_PlayTurn_TestRevealed(int x, int y)
         {
             var board = new Board();
-            board.CreateBoard(3, 3);
+            board.CreateBoard(4, 4);
             board.GameBoard = fakeBoard;
             board.PlayTurn(x, y);
             Assert.True(board.GameBoard[--x][--y].Revealed);
+        }
+
+        [Test]
+        public void Board_PlayTurn_RevealsCorrectArea()
+        {
+            var board = new Board();
+            board.CreateBoard(4, 4);
+            board.GameBoard = fakeBoard;
+            board.PlayTurn(1, 4);
+
+            var correctRevealed = new List<Tuple<int, int>>()
+            {
+                new (1, 2),
+                new (1, 3),
+                new (1, 4),
+                new (1, 5),
+                new (2, 2),
+                new (2, 3),
+                new (2, 4),
+                new (2, 5),
+                new (3, 2),
+                new (3, 3),
+                new(3, 4),
+                new(4, 2),
+                new(4, 3),
+                new(4, 4),
+            };
+            foreach (var (x, y) in correctRevealed)
+            {
+                Assert.True(board.GameBoard[x][y].Revealed);
+            }
+
         }
 
 
