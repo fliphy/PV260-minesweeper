@@ -65,14 +65,18 @@ namespace MinesWeeper.Tests
 
 
         [Test]
-        public void test()
+        [TestCase(5, 5)]
+        [TestCase(14, 34)]
+        [TestCase(3, 3)]
+        [TestCase(50, 50)]
+        public void Board_ItemsHaveCorrectMinesAroundValue(int width, int height)
         {
             var board = new Board();
-            board.CreateBoard(5,5);
+            board.CreateBoard(width,height);
             
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < width; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < height; j++)
                 {
                     Assert.IsTrue(CheckFieldMinesNumber(i, j, board));
                 }
@@ -87,7 +91,11 @@ namespace MinesWeeper.Tests
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    if (x + i < Board.Width && x + i >= 0 && y + j < Board.Height && y + j >= 0)
+                    if (i == 0 && j == 0)
+                    {
+                        continue;
+                    }
+                    if (x + i < board.Width && x + i >= 0 && y + j < board.Height && y + j >= 0)
                     {
                         neighbours.Add(new Tuple<int, int>(x + i, y + j));
                     }

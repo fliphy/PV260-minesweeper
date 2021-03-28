@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MinesWeeper
 {
     public class Board
     {
         public List<List<Item>> GameBoard { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
         public Board()
         {
@@ -14,6 +17,8 @@ namespace MinesWeeper
 
         public void CreateBoard(int width, int height)
         {
+            Width = width;
+            Height = height;
             if (!CheckBoardBoundaries(width, height))
             {
                 throw new ArgumentException("Invalid board boundaries");
@@ -71,7 +76,33 @@ namespace MinesWeeper
             foreach (var (x, y) in mineCoords)
             {
                 GameBoard[x][y].HasMine = true;
+                var neighbors = GetItemNeighbors(x, y);
+                foreach (var (a, b) in neighbors)
+                {
+                    GameBoard[a][b].MinesArround++;
+                }
             }
+        }
+
+        private HashSet<Tuple<int, int>> GetItemNeighbors(int x, int y)
+        {
+            HashSet<Tuple<int, int>> neighbours = new HashSet<Tuple<int, int>>();
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    if (i == 0 && j == 0)
+                    {
+                        continue;
+                    }
+                    if (x + i < Width && x + i >= 0 && y + j < Height && y + j >= 0)
+                    {
+                        neighbours.Add(new Tuple<int, int>(x + i, y + j));
+                    }
+                }
+            }
+
+            return neighbours;
         }
 
 
