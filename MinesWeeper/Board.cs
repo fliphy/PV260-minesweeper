@@ -85,8 +85,7 @@ namespace MinesWeeper
         
         public void PlayTurn(int x, int y)
         {
-            x--;
-            y--;
+            DecrementPosition(ref x, ref y);
             if(!CheckBoardBoundaries(x, y))
             {
                 throw new ArgumentException("Cords out of bounds");
@@ -117,6 +116,21 @@ namespace MinesWeeper
                     queue.Enqueue(item);
                 }
             }
+        }
+
+        public void PlaceFlag(int x, int y)
+        {
+            DecrementPosition(ref x, ref y);
+            if (!CheckBoardBoundaries(x, y))
+            {
+                throw new ArgumentException("Coords out of bounds.");
+            }
+        }
+
+        private void DecrementPosition(ref int x, ref int y)
+        {
+            x--;
+            y--;
         }
 
         private HashSet<Tuple<int, int>> GetItemNeighbors(int x, int y)
