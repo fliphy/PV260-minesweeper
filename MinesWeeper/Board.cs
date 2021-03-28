@@ -17,7 +17,13 @@ namespace MinesWeeper
             {
                 throw new ArgumentException("Invalid board boundaries");
             }
+            InitializeBoard(width, height);
+            
+        }
 
+
+        private void InitializeBoard(int width, int height)
+        {
             GameBoard = new Item[width, height];
             for (int i = 0; i < width; i++)
             {
