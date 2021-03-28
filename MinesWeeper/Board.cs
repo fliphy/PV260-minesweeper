@@ -126,7 +126,7 @@ namespace MinesWeeper
                 throw new ArgumentException("Coords out of bounds.");
             }
 
-            GameBoard[x][y].HasFlag = true;
+            GameBoard[x][y].HasFlag = !GameBoard[x][y].HasFlag;
         }
 
         private void DecrementPosition(ref int x, ref int y)
