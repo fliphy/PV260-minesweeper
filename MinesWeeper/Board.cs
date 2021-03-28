@@ -4,11 +4,12 @@ using System.Linq;
 
 namespace MinesWeeper
 {
-    public class Board
+    public class Board: IBoard
     {
-        public List<List<Item>> GameBoard { get; private set; }
+        public List<List<Item>> GameBoard { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public int State { get; set; }
 
         public Board()
         {
@@ -113,6 +114,9 @@ namespace MinesWeeper
             {
                 throw new ArgumentException("Cords out of bounds");
             }
+
+            State = (GameBoard[x][y].HasMine) ? -1 : 0;
+            
         }
 
         private bool CheckBoardBoundaries(int x, int y)

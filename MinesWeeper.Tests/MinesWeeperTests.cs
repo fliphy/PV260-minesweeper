@@ -120,12 +120,14 @@ namespace MinesWeeper.Tests
             Assert.Throws<ArgumentException>(() => gameBoard.PlayTurn(x, y));
         }
 
+        [Test]
         public void Board_PlayTurn_FoundMineGameOver()
         {
             Board gameBoard = new Board();
-            A.CallTo(() => gameBoard.GameBoard).Returns(fakeBoard);
+            gameBoard.CreateBoard(3,3);
+            gameBoard.GameBoard = fakeBoard;
             gameBoard.PlayTurn(1, 1);
-            Assert.Equals(gameBoard.state, -1);
+            Assert.AreEqual(-1, gameBoard.State);
         }
 
 
