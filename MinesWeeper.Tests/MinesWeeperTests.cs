@@ -37,5 +37,24 @@ namespace MinesWeeper.Tests
                 Assert.That(() => b.GameBoard.First().Count == height);
             });
         }
+        
+        [Test]
+        [TestCase(10, 10)]
+        public void Board_CreateBoard_ValidAmountOfMines(int width, int height)
+        {
+            var board = new Board();
+            board.CreateBoard(width, height);
+            var itemCount = width * height;
+            var minCount = 0.2 * itemCount;
+            var maxCount = 0.6 * itemCount;
+            
+            var mineCount = board.GameBoard.Sum(row => row.Count(item => item.HasMine));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(mineCount >= minCount);
+                Assert.That(mineCount <= maxCount);
+            });
+        }
     }
 }
