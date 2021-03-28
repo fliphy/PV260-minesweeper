@@ -132,6 +132,16 @@ namespace MinesWeeper.Tests
             Assert.AreEqual(expected, gameBoard.State);
         }
 
+        [Test]
+        public void Board_PlayTurn_TestRevealed()
+        {
+            var board = new Board();
+            board.CreateBoard(3, 3);
+            board.GameBoard = fakeBoard;
+            board.PlayTurn(2, 2);
+            Assert.True(board.GameBoard[2][2].Revealed);
+        }
+
 
         private bool CheckFieldMinesNumber(int x, int y, Board board)
         {
