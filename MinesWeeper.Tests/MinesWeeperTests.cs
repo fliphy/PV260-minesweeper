@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using FakeItEasy;
+using Microsoft.VisualBasic;
 
 namespace MinesWeeper.Tests
 {
@@ -59,6 +61,41 @@ namespace MinesWeeper.Tests
                 Assert.That(mineCount >= minCount);
                 Assert.That(mineCount <= maxCount);
             });
+        }
+
+
+        [Test]
+        public void test()
+        {
+            var board = new Board();
+            board.CreateBoard(5,5);
+            
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Assert.IsTrue(CheckFieldMinesNumber(i, j, board));
+                }
+            }
+        }
+
+        private bool CheckFieldMinesNumber(int x, int y, Board board)
+        {
+            HashSet<Tuple<int, int>> neighbours = new HashSet<Tuple<int, int>>();
+            
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    if (x + i < Board.Width && x + i >= 0 && y + j < Board.Height && y + j >= 0)
+                    {
+                        neighbours.Add(new Tuple<int, int>(x + i, y + j));
+                    }
+                }
+            }
+
+            var itemMinesNeighbours = neighbours.Count(a => board.GameBoard[a.Item1][a.Item2].HasMine);
+            return itemMinesNeighbours == board.GameBoard[x][y].MinesArround;
         }
         
     }
