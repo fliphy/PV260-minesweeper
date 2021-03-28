@@ -21,5 +21,20 @@ namespace MinesWeeper.Tests
             Board gameBoard = new Board();
             Assert.Throws<ArgumentException>(() => gameBoard.CreateBoard(width, height));
         }
+
+        [Test]
+        [TestCase(5,5)]
+        [TestCase(3,3)]
+        [TestCase(50,50)]
+        public void Board_CreateBoard_ValidArguments(int width, int height)
+        {
+            Board b = new Board();
+            b.CreateBoard(width, height);
+            Assert.Multiple(() =>
+            {
+                Assert.That(() => b.GameBoard.GetLength(0) == width);
+                Assert.That(() => b.GameBoard.GetLength(1) == height);
+            });
+        }
     }
 }

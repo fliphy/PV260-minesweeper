@@ -4,7 +4,7 @@ namespace MinesWeeper
 {
     public class Board
     {
-        private Item[][] _gameBoard;
+        public Item[,] GameBoard { get; private set; }
 
         public Board()
         {
@@ -18,6 +18,14 @@ namespace MinesWeeper
                 throw new ArgumentException("Invalid board boundaries");
             }
 
+            GameBoard = new Item[width, height];
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    GameBoard[i, j] = new Item();
+                }
+            }
         }
 
 
