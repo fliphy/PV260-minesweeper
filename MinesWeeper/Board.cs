@@ -41,26 +41,37 @@ namespace MinesWeeper
 
         private void SetUpMines(int width, int height)
         {
+            var random = new Random();
             var itemCount = width * height;
             var minCount = Convert.ToInt32(Math.Ceiling(0.2 * itemCount));
             var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
-
-            var random = new Random();
             var mineCount = random.Next(minCount, maxCount + 1);
 
+            var mineCoords = GenerateMineCords(mineCount, width, height);
+            PlaceMines(mineCoords);      
+        }
+
+        private HashSet<Tuple<int, int>> GenerateMineCords(int mineCount, int width, int height)
+        {
+
+            var random = new Random();
             var mineCoords = new HashSet<Tuple<int, int>>();
-            while(mineCoords.Count != mineCount)
+            while (mineCoords.Count != mineCount)
             {
                 var x = random.Next(width);
                 var y = random.Next(height);
                 mineCoords.Add(new Tuple<int, int>(x, y));
             }
 
-            foreach (var (x, y) in mineCoords )
+            return mineCoords;
+        }
+
+        private void PlaceMines(HashSet<Tuple<int, int>> mineCoords)
+        {
+            foreach (var (x, y) in mineCoords)
             {
-                GameBoard[x][y].HasMine = true; 
+                GameBoard[x][y].HasMine = true;
             }
-            
         }
 
 
