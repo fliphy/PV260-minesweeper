@@ -216,6 +216,21 @@ namespace MinesWeeper.Tests
             Assert.True(board.GameBoard[--x][--y].HasFlag);
         }
 
+        [Test]
+        [TestCase(1, 1)]
+        [TestCase(2, 5)]
+        [TestCase(10, 10)]
+        [TestCase(9, 4)]
+
+        public void Board_PlaceFlag_ItemDoesntHaveFlag(int x, int y)
+        {
+            var board = new Board();
+            board.CreateBoard(10, 10);
+            board.PlaceFlag(x, y);
+            board.PlaceFlag(x, y);
+            Assert.False(board.GameBoard[--x][--y].HasFlag);
+        }
+
 
         private bool CheckFieldMinesNumber(int x, int y, Board board)
         {
