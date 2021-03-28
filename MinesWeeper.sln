@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31105.61
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinesWeeper", "MinesWeeper\MinesWeeper.csproj", "{9A952928-F7F1-4122-AABE-7AA83981D9E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinesWeeper.Tests", "MinesWeeper.Tests\MinesWeeper.Tests.csproj", "{D1ACC89F-5F95-4416-8120-AE70C42B26EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A952928-F7F1-4122-AABE-7AA83981D9E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A952928-F7F1-4122-AABE-7AA83981D9E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A952928-F7F1-4122-AABE-7AA83981D9E5}.Debug|x64.ActiveCfg = Debug|x64
+		{9A952928-F7F1-4122-AABE-7AA83981D9E5}.Debug|x64.Build.0 = Debug|x64
+		{9A952928-F7F1-4122-AABE-7AA83981D9E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A952928-F7F1-4122-AABE-7AA83981D9E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A952928-F7F1-4122-AABE-7AA83981D9E5}.Release|x64.ActiveCfg = Release|x64
+		{9A952928-F7F1-4122-AABE-7AA83981D9E5}.Release|x64.Build.0 = Release|x64
+		{D1ACC89F-5F95-4416-8120-AE70C42B26EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1ACC89F-5F95-4416-8120-AE70C42B26EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1ACC89F-5F95-4416-8120-AE70C42B26EC}.Debug|x64.ActiveCfg = Debug|x64
+		{D1ACC89F-5F95-4416-8120-AE70C42B26EC}.Debug|x64.Build.0 = Debug|x64
+		{D1ACC89F-5F95-4416-8120-AE70C42B26EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1ACC89F-5F95-4416-8120-AE70C42B26EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1ACC89F-5F95-4416-8120-AE70C42B26EC}.Release|x64.ActiveCfg = Release|x64
+		{D1ACC89F-5F95-4416-8120-AE70C42B26EC}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB98E135-2800-4399-BD71-5222EC973B8E}
+	EndGlobalSection
+EndGlobal
