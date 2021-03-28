@@ -188,7 +188,19 @@ namespace MinesWeeper.Tests
             board.GameBoard = fakeBoard;
             board.PlayTurn(x, y);
             Assert.AreEqual(1, board.GameBoard.Sum(row => row.Count(item => item.Revealed)));
-        } 
+        }
+
+        [Test]
+        [TestCase(0, 0)]
+        [TestCase(11, 3)]
+        [TestCase(-1, 4)]
+        [TestCase(11, 11)]
+        public void Board_PlaceFlag_ThrowsArgumentException(int x, int y)
+        {
+            var board = new Board();
+            board.CreateBoard(10, 10);
+            Assert.Throws<ArgumentException>(() => board.PlaceFlag(x, y));
+        }
 
 
         private bool CheckFieldMinesNumber(int x, int y, Board board)
