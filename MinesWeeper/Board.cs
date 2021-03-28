@@ -20,6 +20,7 @@ namespace MinesWeeper
             }
             InitializeBoard(width, height);
             
+            
         }
 
 
@@ -34,6 +35,8 @@ namespace MinesWeeper
                     GameBoard[i].Add(new Item());
                 }
             }
+
+            SetUpMines(width, height);
         }
 
         private void SetUpMines(int width, int height)
@@ -43,9 +46,24 @@ namespace MinesWeeper
             var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
 
             var random = new Random();
-            var mineCount = random.Next(minCount, maxCount);
+            var mineCount = random.Next(minCount, maxCount + 1);
+
+            var mineCoords = new HashSet<Tuple<int, int>>();
+            while(mineCoords.Count != mineCount)
+            {
+                var x = random.Next(width);
+                var y = random.Next(height);
+                mineCoords.Add(new Tuple<int, int>(x, y));
+            }
+
+            foreach (var (x, y) in mineCoords )
+            {
+                GameBoard[x][y].HasMine = true; 
+            }
             
         }
+
+
 
 
         private bool CheckBoardBoundaries(int width, int height)
