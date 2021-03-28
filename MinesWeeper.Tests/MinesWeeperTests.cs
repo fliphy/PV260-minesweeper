@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using FakeItEasy;
 
@@ -11,10 +12,14 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        [TestCase(10)]
-        public void Test1(int pom)
+        [TestCase(2,3)]
+        [TestCase(51,50)]
+        [TestCase(-1, 10)]
+        [TestCase(2,2)]
+        public void Board_CreateBoard_InvalidArguments_ThrowsArgumentException(int width, int height)
         {
-            Assert.AreEqual(pom, 9);
+            Board gameBoard = new Board();
+            Assert.Throws<ArgumentException>(gameBoard.createBoard(width, height));
         }
     }
 }
