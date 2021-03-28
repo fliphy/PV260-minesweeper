@@ -140,22 +140,10 @@ namespace MinesWeeper.Tests
         public void Board_PlayTurn_CorrectStateAfterTurn(int x, int y, int expected)
         {
             Board gameBoard = new Board();
-            gameBoard.CreateBoard(4,4);
+            gameBoard.CreateBoard(4,5);
             gameBoard.GameBoard = fakeBoard;
             gameBoard.PlayTurn(x, y);
             Assert.AreEqual(expected, gameBoard.State);
-        }
-
-        [Test]
-        [TestCase(2, 2)]
-        [TestCase(3, 2)]
-        public void Board_PlayTurn_TestRevealed(int x, int y)
-        {
-            var board = new Board();
-            board.CreateBoard(4, 4);
-            board.GameBoard = fakeBoard;
-            board.PlayTurn(x, y);
-            Assert.True(board.GameBoard[--x][--y].Revealed);
         }
 
         [Test]
@@ -185,12 +173,22 @@ namespace MinesWeeper.Tests
             };
             foreach (var (x, y) in correctRevealed)
             {
-                var tmp = x - 1;
-                var tmp1 = y - 1;
-                Assert.True(board.GameBoard[tmp][tmp1].Revealed);
+                var tmpX = x - 1;
+                var tmpY = y - 1;
+                Assert.True(board.GameBoard[tmpX][tmpY].Revealed);
             }
-
         }
+
+        [Test]
+        [TestCase(1, 2)]
+        public void Board_PlayTurn_ClickOnNumber_RevealsNumberOnly(int x, int y)
+        {
+            var board = new Board();
+            board.CreateBoard(4, 5);
+            board.GameBoard = fakeBoard;
+            board.PlayTurn(x, y);
+            Assert.AreEqual(1, board.GameBoard.Sum(row => row.Count(item => item.Revealed)));
+        } 
 
 
         private bool CheckFieldMinesNumber(int x, int y, Board board)
