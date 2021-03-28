@@ -45,8 +45,8 @@ namespace MinesWeeper.Tests
             var board = new Board();
             board.CreateBoard(width, height);
             var itemCount = width * height;
-            var minCount = 0.2 * itemCount;
-            var maxCount = 0.6 * itemCount;
+            var minCount = Convert.ToInt32(Math.Ceiling(0.2 * itemCount));
+            var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
             
             var mineCount = board.GameBoard.Sum(row => row.Count(item => item.HasMine));
 

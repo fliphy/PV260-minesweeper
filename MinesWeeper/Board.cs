@@ -36,6 +36,17 @@ namespace MinesWeeper
             }
         }
 
+        private void SetUpMines(int width, int height)
+        {
+            var itemCount = width * height;
+            var minCount = Convert.ToInt32(Math.Ceiling(0.2 * itemCount));
+            var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
+
+            var random = new Random();
+            var mineCount = random.Next(minCount, maxCount);
+            
+        }
+
 
         private bool CheckBoardBoundaries(int width, int height)
         {
