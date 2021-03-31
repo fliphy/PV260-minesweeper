@@ -3,7 +3,7 @@ namespace MinesWeeper
     public class Game
     {
         private IBoard gameBoard;
-        public int State { get; set; }
+        public GameState State { get; set; } = GameState.GameOff;
         
         public Game(IBoard board)
         {

@@ -62,9 +62,9 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        [TestCase(1, 1, -1)]
-        [TestCase(1, 2, 0)]
-        public void Game_PlayTurn_CorrectStateAfterTurn(int x, int y, int expected)
+        [TestCase(1, 1, GameState.GameOver)]
+        [TestCase(1, 2, GameState.GameOn)]
+        public void Game_PlayTurn_CorrectStateAfterTurn(int x, int y, GameState expected)
         {
             Board board = new Board();
             board.GameBoard = fakeBoard;
@@ -89,24 +89,31 @@ namespace MinesWeeper.Tests
             var game = new Game(board);
             game.PlaceFlag(1, 1);
             
-            Assert.AreEqual(0, game.State);
+            Assert.AreEqual(GameState.GameOn, game.State);
         }
         
         [Test]
         public void Game_PlaceFlag_GameWon()
         {
             var board = new Board();
-            board.CreateBoard(3, 3);
+            //board.CreateBoard(3, 3);
             board.GameBoard = fakeBoard;
             board.Width = 3;
             board.Height = 3;
+            board.MineCount = 3;
+            board.MinesCoords = new HashSet<Tuple<int, int>>()
+            {
+                new(0, 0),
+                new(1, 0),
+                new(2, 0)
+            };
             
             var game = new Game(board);
             game.PlaceFlag(1, 1);
             game.PlaceFlag(2, 1);
             game.PlaceFlag(3, 1);
             
-            Assert.AreEqual(1, game.State);
+            Assert.AreEqual(GameState.GameWon, game.State);
         }
     }
 }

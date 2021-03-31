@@ -17,7 +17,7 @@ namespace MinesWeeper
         
         public int MineCount { get; set; }
 
-        private HashSet<Tuple<int, int>> _minesCoords;
+        public HashSet<Tuple<int, int>> MinesCoords;
         
         public void CreateBoard(int width, int height)
         {
@@ -53,7 +53,7 @@ namespace MinesWeeper
             var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
             MineCount = random.Next(minCount, maxCount + 1);
 
-            _minesCoords = GenerateMineCords(width, height);
+            MinesCoords = GenerateMineCords(width, height);
             PlaceMines();      
         }
 
@@ -74,7 +74,7 @@ namespace MinesWeeper
 
         private void PlaceMines()
         {
-            foreach (var (x, y) in _minesCoords)
+            foreach (var (x, y) in MinesCoords)
             {
                 GameBoard[x][y].HasMine = true;
                 var neighbors = GetItemNeighbors(x, y);
@@ -85,7 +85,7 @@ namespace MinesWeeper
             }
         }
         
-        public int PlayTurn(int x, int y)
+        public GameState PlayTurn(int x, int y)
         {
             DecrementPosition(ref x, ref y);
             if(!CheckBoardBoundaries(x, y))
@@ -93,13 +93,13 @@ namespace MinesWeeper
                 throw new ArgumentException("Cords out of bounds");
             }
 
-            if (GameBoard[x][y].HasMine) return -1;
+            if (GameBoard[x][y].HasMine) return GameState.GameOver;
             GameBoard[x][y].Revealed = true;
             if (GameBoard[x][y].MinesArround == 0)
             {
                 RevealAvailableArea(x, y);
             }
-            return 0;
+            return GameState.GameOn;
         }
 
         private void RevealAvailableArea(int x, int y)
@@ -121,7 +121,7 @@ namespace MinesWeeper
             }
         }
 
-        public int PlaceFlag(int x, int y)
+        public GameState PlaceFlag(int x, int y)
         {
             DecrementPosition(ref x, ref y);
             if (!CheckBoardBoundaries(x, y))
@@ -129,7 +129,7 @@ namespace MinesWeeper
                 throw new ArgumentException("Coords out of bounds.");
             }
 
-            if (!GameBoard[x][y].HasFlag && CurrentFlagCount == MineCount) return 0;
+            if (!GameBoard[x][y].HasFlag && CurrentFlagCount == MineCount) return GameState.GameOn;
 
             GameBoard[x][y].HasFlag = !GameBoard[x][y].HasFlag;
 
@@ -140,10 +140,10 @@ namespace MinesWeeper
 
             if (CurrentFlagCount == MineCount)
             {
-                return _minesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag) ? 1 : 0;
+                return MinesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag) ? GameState.GameWon : GameState.GameOn;
             }
 
-            return 0;
+            return GameState.GameOn;
         }
 
         private void DecrementPosition(ref int x, ref int y)
