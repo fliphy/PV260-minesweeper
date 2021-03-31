@@ -13,6 +13,7 @@ namespace MinesWeeper
         public void StartGame(int width, int height)
         {
             gameBoard.CreateBoard(width, height);
+            State = GameState.GameOn;
         }
 
         public IBoard PlayTurn(int x, int y)
