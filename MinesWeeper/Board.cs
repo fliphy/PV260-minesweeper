@@ -6,6 +6,9 @@ namespace MinesWeeper
 {
     public class Board: IBoard
     {
+        private const int MIN_BOARD_BOUNDARY = 3; 
+        private const int MAX_BOARD_BOUNDARY = 50;
+        
         public List<List<Item>> GameBoard { get; set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
@@ -16,12 +19,7 @@ namespace MinesWeeper
         public int State { get; set; }
 
         private HashSet<Tuple<int, int>> _minesCoords;
-
-        public Board()
-        {
-
-        }
-
+        
         public void CreateBoard(int width, int height)
         {
             Width = width;
@@ -31,6 +29,7 @@ namespace MinesWeeper
                 throw new ArgumentException("Invalid board boundaries");
             }
             InitializeBoard(width, height);
+            SetUpMines(width, height);
         }
 
 
@@ -45,8 +44,6 @@ namespace MinesWeeper
                     GameBoard[i].Add(new Item());
                 }
             }
-
-            SetUpMines(width, height);
         }
 
         private void SetUpMines(int width, int height)
@@ -181,7 +178,10 @@ namespace MinesWeeper
 
         private bool CheckBoardInitBoundaries(int width, int height)
         {
-            return width >= 3 && height >= 3 && width <= 50 && height <= 50;
+            return width >= MIN_BOARD_BOUNDARY 
+                   && height >= MIN_BOARD_BOUNDARY
+                   && width <= MAX_BOARD_BOUNDARY 
+                   && height <= MAX_BOARD_BOUNDARY;
         }
     }
 }
