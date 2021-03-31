@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace MinesWeeper.Tests
 {
-    public class Tests
+    public class BoardTests
     {
         private Board board;
 
