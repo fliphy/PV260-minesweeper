@@ -113,7 +113,7 @@ namespace MinesWeeper.Tests
             game.PlaceFlag(2, 1);
             game.PlaceFlag(3, 1);
             
-            Assert.AreEqual(GameState.GameWon, game.State);
+            Assert.That(() => game.State.Equals(GameState.GameWon));
         }
     }
 }
