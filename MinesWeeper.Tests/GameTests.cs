@@ -9,6 +9,8 @@ namespace MinesWeeper.Tests
         
         [Test]
         [TestCase(10, 10)]
+        [TestCase(25, 25)]
+        [TestCase(50, 50)]
         public void CreateBoard(int width, int height)
         {
             var board = new Board();
