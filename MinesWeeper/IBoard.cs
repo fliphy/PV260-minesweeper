@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace MinesWeeper
+﻿namespace MinesWeeper
 {
     public interface IBoard
     {
-        List<List<Item>> GameBoard { get; set; }
-        void PlayTurn(int x, int y);
-        
-        int State { get; set; }
+        GameState PlayTurn(int x, int y);
+        GameState PlaceFlag(int x, int y);
+        void CreateBoard(int width, int height);
     }
 }

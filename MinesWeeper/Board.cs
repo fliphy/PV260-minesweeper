@@ -6,22 +6,16 @@ namespace MinesWeeper
 {
     public class Board: IBoard
     {
+        private const int MIN_BOARD_BOUNDARY = 3; 
+        private const int MAX_BOARD_BOUNDARY = 50;
+        
         public List<List<Item>> GameBoard { get; set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        
+        public int Width { get; set; }
+        public int Height { get; set; }
         public int CurrentFlagCount { get; set; }
-        
         public int MineCount { get; set; }
-        public int State { get; set; }
-
-        private HashSet<Tuple<int, int>> _minesCoords;
-
-        public Board()
-        {
-
-        }
-
+        public HashSet<Tuple<int, int>> MinesCoords;
+        
         public void CreateBoard(int width, int height)
         {
             Width = width;
@@ -31,9 +25,9 @@ namespace MinesWeeper
                 throw new ArgumentException("Invalid board boundaries");
             }
             InitializeBoard(width, height);
+            SetUpMines(width, height);
         }
-
-
+        
         private void InitializeBoard(int width, int height)
         {
             GameBoard = new List<List<Item>>();
@@ -45,8 +39,6 @@ namespace MinesWeeper
                     GameBoard[i].Add(new Item());
                 }
             }
-
-            SetUpMines(width, height);
         }
 
         private void SetUpMines(int width, int height)
@@ -57,13 +49,12 @@ namespace MinesWeeper
             var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
             MineCount = random.Next(minCount, maxCount + 1);
 
-            _minesCoords = GenerateMineCords(width, height);
+            MinesCoords = GenerateMineCords(width, height);
             PlaceMines();      
         }
 
         private HashSet<Tuple<int, int>> GenerateMineCords( int width, int height)
         {
-
             var random = new Random();
             var mineCoords = new HashSet<Tuple<int, int>>();
             while (mineCoords.Count != MineCount)
@@ -78,7 +69,7 @@ namespace MinesWeeper
 
         private void PlaceMines()
         {
-            foreach (var (x, y) in _minesCoords)
+            foreach (var (x, y) in MinesCoords)
             {
                 GameBoard[x][y].HasMine = true;
                 var neighbors = GetItemNeighbors(x, y);
@@ -89,7 +80,7 @@ namespace MinesWeeper
             }
         }
         
-        public void PlayTurn(int x, int y)
+        public GameState PlayTurn(int x, int y)
         {
             DecrementPosition(ref x, ref y);
             if(!CheckBoardBoundaries(x, y))
@@ -97,12 +88,14 @@ namespace MinesWeeper
                 throw new ArgumentException("Cords out of bounds");
             }
 
-            State = (GameBoard[x][y].HasMine) ? -1 : 0;
+            if (GameBoard[x][y].HasMine) return GameState.GameOver;
             GameBoard[x][y].Revealed = true;
             if (GameBoard[x][y].MinesArround == 0)
             {
                 RevealAvailableArea(x, y);
             }
+            
+            return GameState.GameOn;
         }
 
         private void RevealAvailableArea(int x, int y)
@@ -124,7 +117,7 @@ namespace MinesWeeper
             }
         }
 
-        public void PlaceFlag(int x, int y)
+        public GameState PlaceFlag(int x, int y)
         {
             DecrementPosition(ref x, ref y);
             if (!CheckBoardBoundaries(x, y))
@@ -132,7 +125,7 @@ namespace MinesWeeper
                 throw new ArgumentException("Coords out of bounds.");
             }
 
-            if (!GameBoard[x][y].HasFlag && CurrentFlagCount == MineCount) return;
+            if (!GameBoard[x][y].HasFlag && CurrentFlagCount == MineCount) return GameState.GameOn;
 
             GameBoard[x][y].HasFlag = !GameBoard[x][y].HasFlag;
 
@@ -143,14 +136,27 @@ namespace MinesWeeper
 
             if (CurrentFlagCount == MineCount)
             {
-                State =_minesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag) ? 1 : 0;
+                return CheckWinCondition() ? GameState.GameWon : GameState.GameOn;
             }
+
+            return GameState.GameOn;
+        }
+
+        public Item GetItem(int x, int y)
+        {
+            DecrementPosition(ref x, ref y);
+            return GameBoard[x][y];
         }
 
         private void DecrementPosition(ref int x, ref int y)
         {
             x--;
             y--;
+        }
+
+        private bool CheckWinCondition()
+        {
+            return MinesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag);
         }
 
         private HashSet<Tuple<int, int>> GetItemNeighbors(int x, int y)
@@ -170,7 +176,6 @@ namespace MinesWeeper
                     }
                 }
             }
-
             return neighbours;
         }
 
@@ -181,7 +186,10 @@ namespace MinesWeeper
 
         private bool CheckBoardInitBoundaries(int width, int height)
         {
-            return width >= 3 && height >= 3 && width <= 50 && height <= 50;
+            return width >= MIN_BOARD_BOUNDARY 
+                   && height >= MIN_BOARD_BOUNDARY
+                   && width <= MAX_BOARD_BOUNDARY 
+                   && height <= MAX_BOARD_BOUNDARY;
         }
     }
 }
