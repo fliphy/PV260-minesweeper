@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MinesWeeper
+﻿namespace MinesWeeper
 {
     public class Item
     {

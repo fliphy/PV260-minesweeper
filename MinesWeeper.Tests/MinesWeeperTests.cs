@@ -2,53 +2,62 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using FakeItEasy;
-using Microsoft.VisualBasic;
 
 namespace MinesWeeper.Tests
 {
     public class Tests
     {
-        private List<List<Item>> fakeBoard = new()
-        {
-            new List<Item>
-            {
-                new Item {HasMine = true},
-                new Item {MinesArround = 1},
-                new Item(),
-                new Item(),
-                new Item(),
-            },
-            new List<Item>
-            {
-                new Item {HasMine = true},
-                new Item {MinesArround = 1},
-                new Item(),
-                new Item {MinesArround = 1},
-                new Item {MinesArround = 1},
-            },
-            new List<Item>
-            {
-                new Item {HasMine = true},
-                new Item {MinesArround = 1},
-                new Item(),
-                new Item {MinesArround = 1},
-                new Item {HasMine = true},
-            },
-            new List<Item>
-            {
-                new Item {HasMine = true},
-                new Item {MinesArround = 1},
-                new Item(),
-                new Item {MinesArround = 1},
-                new Item {MinesArround = 1},
-            }
-        };
-
+        private Board board;
 
         [SetUp]
         public void Setup()
         {
+            board = new Board();
+            board.Width = 4;
+            board.Height = 5;
+            board.MinesCoords = new HashSet<Tuple<int, int>>()
+            {
+                new(0, 0),
+                new(1, 0),
+                new(2, 0),
+                new(2, 4),
+                new(3, 0),
+            };
+            board.GameBoard = new()
+            {
+                new List<Item>
+                {
+                    new Item {HasMine = true},
+                    new Item {MinesArround = 2},
+                    new Item(),
+                    new Item(),
+                    new Item(),
+                },
+                new List<Item>
+                {
+                    new Item {HasMine = true},
+                    new Item {MinesArround = 3},
+                    new Item(),
+                    new Item {MinesArround = 1},
+                    new Item {MinesArround = 1},
+                },
+                new List<Item>
+                {
+                    new Item {HasMine = true},
+                    new Item {MinesArround = 3},
+                    new Item(),
+                    new Item {MinesArround = 1},
+                    new Item {HasMine = true},
+                },
+                new List<Item>
+                {
+                    new Item {HasMine = true},
+                    new Item {MinesArround = 2},
+                    new Item(),
+                    new Item {MinesArround = 1},
+                    new Item {MinesArround = 1},
+                }
+            };
         }
 
         [Test]
@@ -85,13 +94,13 @@ namespace MinesWeeper.Tests
         [TestCase(25, 44)]
         public void Board_CreateBoard_ValidAmountOfMines(int width, int height)
         {
-            var board = new Board();
-            board.CreateBoard(width, height);
+            var gameBoard = new Board();
+            gameBoard.CreateBoard(width, height);
             var itemCount = width * height;
             var minCount = Convert.ToInt32(Math.Ceiling(0.2 * itemCount));
             var maxCount = Convert.ToInt32(Math.Floor(0.6 * itemCount));
 
-            var mineCount = board.GameBoard.Sum(row => row.Count(item => item.HasMine));
+            var mineCount = gameBoard.GameBoard.Sum(row => row.Count(item => item.HasMine));
 
             Assert.Multiple(() =>
             {
@@ -108,14 +117,14 @@ namespace MinesWeeper.Tests
         [TestCase(50, 50)]
         public void Board_ItemsHaveCorrectMinesAroundValue(int width, int height)
         {
-            var board = new Board();
-            board.CreateBoard(width, height);
+            var gameBoard = new Board();
+            gameBoard.CreateBoard(width, height);
 
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < height; j++)
                 {
-                    Assert.IsTrue(CheckFieldMinesNumber(i, j, board));
+                    Assert.IsTrue(CheckFieldMinesNumber(i, j, gameBoard));
                 }
             }
         }
@@ -137,9 +146,6 @@ namespace MinesWeeper.Tests
         [Test]
         public void Board_PlayTurn_RevealsCorrectArea()
         {
-            var board = new Board();
-            board.CreateBoard(4, 5);
-            board.GameBoard = fakeBoard;
             board.PlayTurn(1, 4);
 
             var correctRevealed = new List<Tuple<int, int>>()
@@ -171,9 +177,6 @@ namespace MinesWeeper.Tests
         [TestCase(1, 2)]
         public void Board_PlayTurn_ClickOnNumber_RevealsNumberOnly(int x, int y)
         {
-            var board = new Board();
-            board.CreateBoard(4, 5);
-            board.GameBoard = fakeBoard;
             board.PlayTurn(x, y);
             Assert.AreEqual(1, board.GameBoard.Sum(row => row.Count(item => item.Revealed)));
         }
@@ -185,9 +188,9 @@ namespace MinesWeeper.Tests
         [TestCase(11, 11)]
         public void Board_PlaceFlag_ThrowsArgumentException(int x, int y)
         {
-            var board = new Board();
-            board.CreateBoard(10, 10);
-            Assert.Throws<ArgumentException>(() => board.PlaceFlag(x, y));
+            var gameBoard = new Board();
+            gameBoard.CreateBoard(10, 10);
+            Assert.Throws<ArgumentException>(() => gameBoard.PlaceFlag(x, y));
         }
 
         [Test]
@@ -195,13 +198,12 @@ namespace MinesWeeper.Tests
         [TestCase(2, 5)]
         [TestCase(10, 10)]
         [TestCase(9, 4)]
-
         public void Board_PlaceFlag_ItemHasFlag(int x, int y)
         {
-            var board = new Board();
-            board.CreateBoard(10, 10);
-            board.PlaceFlag(x, y);
-            Assert.True(board.GameBoard[--x][--y].HasFlag);
+            var gameBoard = new Board();
+            gameBoard.CreateBoard(10, 10);
+            gameBoard.PlaceFlag(x, y);
+            Assert.True(gameBoard.GameBoard[--x][--y].HasFlag);
         }
 
         [Test]
@@ -209,33 +211,16 @@ namespace MinesWeeper.Tests
         [TestCase(2, 5)]
         [TestCase(10, 10)]
         [TestCase(9, 4)]
-
         public void Board_PlaceFlag_ItemDoesntHaveFlag(int x, int y)
         {
-            var board = new Board();
-            board.CreateBoard(10, 10);
-            board.PlaceFlag(x, y);
-            board.PlaceFlag(x, y);
-            Assert.False(board.GameBoard[--x][--y].HasFlag);
+            var gameBoard = new Board();
+            gameBoard.CreateBoard(10, 10);
+            gameBoard.PlaceFlag(x, y);
+            gameBoard.PlaceFlag(x, y);
+            Assert.False(gameBoard.GameBoard[--x][--y].HasFlag);
         }
-
-        /*
-        [Test]
-        public void Board_PlaceFlag_GameHasEnded()
-        {
-            var board = new Board();
-            board.CreateBoard(4, 5);
-            board.GameBoard = fakeBoard;
-            board.PlaceFlag(1,1);
-            board.PlaceFlag(2,1);
-            board.PlaceFlag(3,1);
-            board.PlaceFlag(4,1);
-            board.PlaceFlag(3,5);
-            Assert.AreEqual(1, board.State = 1);
-        }*/
-
-
-    private bool CheckFieldMinesNumber(int x, int y, Board board)
+        
+        private bool CheckFieldMinesNumber(int x, int y, Board board)
         {
             HashSet<Tuple<int, int>> neighbours = new HashSet<Tuple<int, int>>();
 

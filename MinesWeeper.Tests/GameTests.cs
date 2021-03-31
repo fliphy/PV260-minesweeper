@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-
 namespace MinesWeeper.Tests
 {
     public class GameTests
