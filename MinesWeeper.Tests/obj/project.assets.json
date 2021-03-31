@@ -1284,6 +1284,16 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
+      },
+      "MinesWeeper/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/MinesWeeper.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MinesWeeper.dll": {}
+        }
       }
     }
   },
@@ -4786,43 +4796,51 @@
         "system.xml.xpath.xmldocument.4.3.0.nupkg.sha512",
         "system.xml.xpath.xmldocument.nuspec"
       ]
+    },
+    "MinesWeeper/1.0.0": {
+      "type": "project",
+      "path": "../MinesWeeper/MinesWeeper.csproj",
+      "msbuildProject": "../MinesWeeper/MinesWeeper.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
       "FakeItEasy >= 7.0.0",
       "Microsoft.NET.Test.Sdk >= 16.5.0",
+      "MinesWeeper >= 1.0.0",
       "NUnit >= 3.12.0",
       "NUnit3TestAdapter >= 3.16.1"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Igigi\\.nuget\\packages\\": {}
+    "/home/nnn/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Igigi\\Desktop\\MUNI\\PV260 Software Quality\\Homework01\\PV260-minesweeper\\MinesWeeper.Tests\\MinesWeeper.Tests.csproj",
+      "projectUniqueName": "/home/nnn/lol/PV260-minesweeper/MinesWeeper.Tests/MinesWeeper.Tests.csproj",
       "projectName": "MinesWeeper.Tests",
-      "projectPath": "C:\\Users\\Igigi\\Desktop\\MUNI\\PV260 Software Quality\\Homework01\\PV260-minesweeper\\MinesWeeper.Tests\\MinesWeeper.Tests.csproj",
-      "packagesPath": "C:\\Users\\Igigi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Igigi\\Desktop\\MUNI\\PV260 Software Quality\\Homework01\\PV260-minesweeper\\MinesWeeper.Tests\\obj\\",
+      "projectPath": "/home/nnn/lol/PV260-minesweeper/MinesWeeper.Tests/MinesWeeper.Tests.csproj",
+      "packagesPath": "/home/nnn/.nuget/packages/",
+      "outputPath": "/home/nnn/lol/PV260-minesweeper/MinesWeeper.Tests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Igigi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/nnn/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/nnn/lol/PV260-minesweeper/MinesWeeper/MinesWeeper.csproj": {
+              "projectPath": "/home/nnn/lol/PV260-minesweeper/MinesWeeper/MinesWeeper.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -4867,7 +4885,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.201/RuntimeIdentifierGraph.json"
       }
     }
   }

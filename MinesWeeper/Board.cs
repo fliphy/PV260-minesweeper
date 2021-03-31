@@ -10,13 +10,12 @@ namespace MinesWeeper
         private const int MAX_BOARD_BOUNDARY = 50;
         
         public List<List<Item>> GameBoard { get; set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
         
         public int CurrentFlagCount { get; set; }
         
         public int MineCount { get; set; }
-        public int State { get; set; }
 
         private HashSet<Tuple<int, int>> _minesCoords;
         
@@ -86,7 +85,7 @@ namespace MinesWeeper
             }
         }
         
-        public void PlayTurn(int x, int y)
+        public int PlayTurn(int x, int y)
         {
             DecrementPosition(ref x, ref y);
             if(!CheckBoardBoundaries(x, y))
@@ -94,12 +93,13 @@ namespace MinesWeeper
                 throw new ArgumentException("Cords out of bounds");
             }
 
-            State = (GameBoard[x][y].HasMine) ? -1 : 0;
+            if (GameBoard[x][y].HasMine) return -1;
             GameBoard[x][y].Revealed = true;
             if (GameBoard[x][y].MinesArround == 0)
             {
                 RevealAvailableArea(x, y);
             }
+            return 0;
         }
 
         private void RevealAvailableArea(int x, int y)
@@ -121,7 +121,7 @@ namespace MinesWeeper
             }
         }
 
-        public void PlaceFlag(int x, int y)
+        public int PlaceFlag(int x, int y)
         {
             DecrementPosition(ref x, ref y);
             if (!CheckBoardBoundaries(x, y))
@@ -129,7 +129,7 @@ namespace MinesWeeper
                 throw new ArgumentException("Coords out of bounds.");
             }
 
-            if (!GameBoard[x][y].HasFlag && CurrentFlagCount == MineCount) return;
+            if (!GameBoard[x][y].HasFlag && CurrentFlagCount == MineCount) return 0;
 
             GameBoard[x][y].HasFlag = !GameBoard[x][y].HasFlag;
 
@@ -140,8 +140,10 @@ namespace MinesWeeper
 
             if (CurrentFlagCount == MineCount)
             {
-                State =_minesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag) ? 1 : 0;
+                return _minesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag) ? 1 : 0;
             }
+
+            return 0;
         }
 
         private void DecrementPosition(ref int x, ref int y)

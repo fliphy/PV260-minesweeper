@@ -66,8 +66,9 @@ namespace MinesWeeper.Tests
         {
             Board board = new Board();
             board.GameBoard = fakeBoard;
+            board.Width = 3;
+            board.Height = 3;
             var game = new Game(board);
-            game.StartGame(4, 5);
             game.PlayTurn(x, y);
             Assert.AreEqual(expected, game.State);
         }

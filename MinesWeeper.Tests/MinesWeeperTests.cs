@@ -135,18 +135,6 @@ namespace MinesWeeper.Tests
         }
 
         [Test]
-        [TestCase(1, 1, -1)]
-        [TestCase(1, 2, 0)]
-        public void Board_PlayTurn_CorrectStateAfterTurn(int x, int y, int expected)
-        {
-            Board gameBoard = new Board();
-            gameBoard.CreateBoard(4, 5);
-            gameBoard.GameBoard = fakeBoard;
-            gameBoard.PlayTurn(x, y);
-            Assert.AreEqual(expected, gameBoard.State);
-        }
-
-        [Test]
         public void Board_PlayTurn_RevealsCorrectArea()
         {
             var board = new Board();
@@ -231,6 +219,7 @@ namespace MinesWeeper.Tests
             Assert.False(board.GameBoard[--x][--y].HasFlag);
         }
 
+        /*
         [Test]
         public void Board_PlaceFlag_GameHasEnded()
         {
@@ -243,7 +232,7 @@ namespace MinesWeeper.Tests
             board.PlaceFlag(4,1);
             board.PlaceFlag(3,5);
             Assert.AreEqual(1, board.State = 1);
-        }
+        }*/
 
 
     private bool CheckFieldMinesNumber(int x, int y, Board board)
