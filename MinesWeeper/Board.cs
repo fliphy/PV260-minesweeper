@@ -12,11 +12,8 @@ namespace MinesWeeper
         public List<List<Item>> GameBoard { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        
         public int CurrentFlagCount { get; set; }
-        
         public int MineCount { get; set; }
-
         public HashSet<Tuple<int, int>> MinesCoords;
         
         public void CreateBoard(int width, int height)
@@ -30,8 +27,7 @@ namespace MinesWeeper
             InitializeBoard(width, height);
             SetUpMines(width, height);
         }
-
-
+        
         private void InitializeBoard(int width, int height)
         {
             GameBoard = new List<List<Item>>();
@@ -59,7 +55,6 @@ namespace MinesWeeper
 
         private HashSet<Tuple<int, int>> GenerateMineCords( int width, int height)
         {
-
             var random = new Random();
             var mineCoords = new HashSet<Tuple<int, int>>();
             while (mineCoords.Count != MineCount)
@@ -99,6 +94,7 @@ namespace MinesWeeper
             {
                 RevealAvailableArea(x, y);
             }
+            
             return GameState.GameOn;
         }
 
@@ -140,16 +136,27 @@ namespace MinesWeeper
 
             if (CurrentFlagCount == MineCount)
             {
-                return MinesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag) ? GameState.GameWon : GameState.GameOn;
+                return CheckWinCondition() ? GameState.GameWon : GameState.GameOn;
             }
 
             return GameState.GameOn;
+        }
+
+        public Item GetItem(int x, int y)
+        {
+            DecrementPosition(ref x, ref y);
+            return GameBoard[x][y];
         }
 
         private void DecrementPosition(ref int x, ref int y)
         {
             x--;
             y--;
+        }
+
+        private bool CheckWinCondition()
+        {
+            return MinesCoords.All(mine => GameBoard[mine.Item1][mine.Item2].HasFlag);
         }
 
         private HashSet<Tuple<int, int>> GetItemNeighbors(int x, int y)
@@ -169,7 +176,6 @@ namespace MinesWeeper
                     }
                 }
             }
-
             return neighbours;
         }
 

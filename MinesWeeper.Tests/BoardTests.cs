@@ -203,7 +203,7 @@ namespace MinesWeeper.Tests
             var gameBoard = new Board();
             gameBoard.CreateBoard(10, 10);
             gameBoard.PlaceFlag(x, y);
-            Assert.True(gameBoard.GameBoard[--x][--y].HasFlag);
+            Assert.True(gameBoard.GetItem(x, y).HasFlag);
         }
 
         [Test]
@@ -217,7 +217,7 @@ namespace MinesWeeper.Tests
             gameBoard.CreateBoard(10, 10);
             gameBoard.PlaceFlag(x, y);
             gameBoard.PlaceFlag(x, y);
-            Assert.False(gameBoard.GameBoard[--x][--y].HasFlag);
+            Assert.False(gameBoard.GetItem(x, y).HasFlag);
         }
         
         private bool CheckFieldMinesNumber(int x, int y, Board board)
