@@ -6,6 +6,7 @@ namespace MinesWeeper
     {
         List<List<Item>> GameBoard { get; set; }
         int PlayTurn(int x, int y);
+        int PlaceFlag(int x, int y);
         void CreateBoard(int width, int height);
     }
 }

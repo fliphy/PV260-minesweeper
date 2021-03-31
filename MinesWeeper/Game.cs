@@ -20,5 +20,11 @@ namespace MinesWeeper
             State = gameBoard.PlayTurn(x, y);
             return gameBoard;
         }
+        
+        public IBoard PlaceFlag(int x, int y)
+        {
+            State = gameBoard.PlaceFlag(x, y);
+            return gameBoard;
+        }
     }
 }
