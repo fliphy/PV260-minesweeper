@@ -40,6 +40,7 @@ namespace MinesWeeper.Tests
         {
             var board = new Board();
             var game = new Game(board);
+            
             Assert.Throws<ArgumentException>(() => game.StartGame(width, height));
         }
         
@@ -52,6 +53,7 @@ namespace MinesWeeper.Tests
             var board = new Board();
             var game = new Game(board);
             game.StartGame(width, height);
+            
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(height, board.Height);
@@ -68,9 +70,26 @@ namespace MinesWeeper.Tests
             board.GameBoard = fakeBoard;
             board.Width = 3;
             board.Height = 3;
+            
             var game = new Game(board);
             game.PlayTurn(x, y);
+            
             Assert.AreEqual(expected, game.State);
+        }
+        
+        [Test]
+        public void Game_PlaceFlag_GameContinue()
+        {
+            var board = new Board();
+            board.CreateBoard(3, 3);
+            board.GameBoard = fakeBoard;
+            board.Width = 3;
+            board.Height = 3;
+            
+            var game = new Game(board);
+            game.PlaceFlag(1, 1);
+            
+            Assert.AreEqual(0, game.State);
         }
         
         [Test]
@@ -81,13 +100,13 @@ namespace MinesWeeper.Tests
             board.GameBoard = fakeBoard;
             board.Width = 3;
             board.Height = 3;
+            
             var game = new Game(board);
-
             game.PlaceFlag(1, 1);
             game.PlaceFlag(2, 1);
             game.PlaceFlag(3, 1);
             
-            Assert.AreEqual(1, game.State = 1);
+            Assert.AreEqual(1, game.State);
         }
     }
 }
